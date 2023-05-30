@@ -181,6 +181,20 @@ swift_library(
 )
 
 swift_library(
+    name = "swift_lib_with_structured_macos_resources",
+    testonly = True,
+    srcs = [
+        "Shared.swift",
+    ],
+    data = [
+        ":structured_resources",
+    ],
+    features = ["swift.no_generated_module_map"],
+    module_name = "swift_lib_with_macos_resources",
+    tags = common.fixture_tags,
+)
+
+swift_library(
     name = "swift_common_lib",
     testonly = True,
     srcs = ["Common.swift"],
@@ -412,6 +426,11 @@ filegroup(
 )
 
 filegroup(
+    name = "assets_macos",
+    srcs = glob(["assets_macos.xcassets/**"]),
+)
+
+filegroup(
     name = "app_icons_ios",
     srcs = glob(["app_icons_ios.xcassets/**"]),
 )
@@ -482,6 +501,11 @@ filegroup(
     srcs = glob(["sticker_pack_ios.xcstickers/**"]),
 )
 
+filegroup(
+    name = "storyboard_macos",
+    srcs = ["storyboard_macos.storyboard"],
+)
+
 objc_library(
     name = "sticker_pack_ios_lib",
     data = [
@@ -541,6 +565,22 @@ objc_library(
         ":unversioned_datamodel",
         ":versioned_datamodel",
         ":view_ios.xib",
+    ],
+    tags = common.fixture_tags,
+)
+
+objc_library(
+    name = "macos_non_localized_assets_lib",
+    srcs = ["main.m"],
+    data = [
+        ":assets_macos",
+        ":mapping_model",
+        ":nonlocalized.plist",
+        ":nonlocalized.strings",
+        ":sample.png",
+        ":storyboard_macos",
+        ":unversioned_datamodel",
+        ":versioned_datamodel",
     ],
     tags = common.fixture_tags,
 )
@@ -623,6 +663,35 @@ apple_resource_bundle(
     tags = common.fixture_tags,
 )
 
+apple_resource_bundle(
+    name = "bundle_library_macos",
+    infoplists = [
+        "Info-template.plist",
+    ],
+    resources = [
+        "generated.strings",
+        "nonlocalized.plist",
+        "nonlocalized.strings",
+        "nonlocalized_resource.txt",
+        "sample.png",
+        ":assets_macos",
+        ":basic_bundle",
+        ":localized_generic_resources",
+        ":localized_plists",
+        ":localized_strings",
+        ":mapping_model",
+        ":metal_files",
+        ":storyboard_macos",
+        ":unversioned_datamodel",
+        ":versioned_datamodel",
+    ],
+    structured_resources = [
+        ":generate_structured_strings",
+        ":structured",
+    ],
+    tags = common.fixture_tags,
+)
+
 objc_library(
     name = "bundle_library_ios_lib",
     data = [
@@ -695,6 +764,40 @@ swift_library(
 )
 
 swift_library(
+    name = "swift_lib_with_macos_resources",
+    srcs = ["AppDelegate-macos.swift"],
+    data = [
+        ":swift_structured_resources",
+        "//test/testdata/resources:assets_macos",
+        "//test/testdata/resources:localized_generic_resources",
+        "//test/testdata/resources:localized_strings",
+        "//test/testdata/resources:nonlocalized.strings",
+        "//test/testdata/resources:nonlocalized_resource.txt",
+        "//test/testdata/resources:storyboard_macos.storyboard",
+        "//test/testdata/resources:unversioned_datamodel",
+        "//test/testdata/resources:versioned_datamodel",
+    ],
+    module_name = "EasyToSearchForModuleName",
+    tags = common.fixture_tags,
+)
+
+swift_library(
+    name = "macos_swift_lib_with_resources",
+    srcs = ["main.swift"],
+    data = [
+        ":swift_structured_resources",
+        "//test/testdata/resources:localized_generic_resources",
+        "//test/testdata/resources:localized_strings",
+        "//test/testdata/resources:nonlocalized.strings",
+        "//test/testdata/resources:nonlocalized_resource.txt",
+        "//test/testdata/resources:unversioned_datamodel",
+        "//test/testdata/resources:versioned_datamodel",
+    ],
+    module_name = "EasyToSearchForModuleName",
+    tags = common.fixture_tags,
+)
+
+swift_library(
     name = "swift_lib_with_transitive_resources",
     srcs = ["Dummy.swift"],
     tags = common.fixture_tags,
@@ -720,6 +823,15 @@ swift_library(
     srcs = ["Dummy.swift"],
     data = [
         "//test/testdata/resources:storyboard_ios.storyboard",
+    ],
+    tags = common.fixture_tags,
+)
+
+swift_library(
+    name = "swift_lib_with_macos_storyboard_b",
+    srcs = ["Dummy.swift"],
+    data = [
+        "//test/testdata/resources:storyboard_macos.storyboard",
     ],
     tags = common.fixture_tags,
 )

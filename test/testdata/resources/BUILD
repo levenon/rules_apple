@@ -21,6 +21,7 @@ exports_files([
     "sample.mlpackage",
     "sample.png",
     "storyboard_ios.storyboard",
+    "storyboard_macos.storyboard",
     "view_ios.xib",
 ])
 
@@ -106,6 +107,11 @@ filegroup(
 filegroup(
     name = "assets_ios",
     srcs = glob(["assets_ios.xcassets/**"]),
+)
+
+filegroup(
+    name = "assets_macos",
+    srcs = glob(["assets_macos.xcassets/**"]),
 )
 
 filegroup(
